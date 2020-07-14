@@ -5,11 +5,11 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from numpy import array
 
-from AutoRemoveProgram.AutoRemoveData import AutoRemoveData
-from AutoRemoveProgram.MessageBox import MessageBox
-from AutoRemoveProgram.String import NameString, PathString
-from AutoRemoveProgram.Settings import CycleSettings, TimeSettings
-from AutoRemoveProgram.SystemTrayIcon import SystemTrayIcon
+from AutoRemoveData import AutoRemoveData
+from MessageBox import MessageBox
+from String import NameString, PathString
+from Settings import CycleSettings, TimeSettings
+from SystemTrayIcon import SystemTrayIcon
 
 
 class MainWindow(QMainWindow):

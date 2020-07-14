@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QMainWindow, QDialog
 
-from AutoRemoveProgram.String import NameString, PathString
+from String import NameString, PathString
 
 
 class SystemTrayIcon(QSystemTrayIcon):
