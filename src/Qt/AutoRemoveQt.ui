@@ -52,7 +52,7 @@
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>190</y>
+      <y>170</y>
       <width>100</width>
       <height>30</height>
      </rect>
@@ -90,7 +90,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>193</y>
+      <y>133</y>
       <width>120</width>
       <height>16</height>
      </rect>
@@ -109,7 +109,7 @@
     <property name="geometry">
      <rect>
       <x>280</x>
-      <y>193</y>
+      <y>133</y>
       <width>47</width>
       <height>21</height>
      </rect>
@@ -128,8 +128,8 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>190</y>
-      <width>70</width>
+      <y>130</y>
+      <width>85</width>
       <height>25</height>
      </rect>
     </property>
@@ -183,48 +183,6 @@
       <family>Times New Roman</family>
       <pointsize>12</pointsize>
      </font>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_file">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>130</y>
-      <width>85</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>檔案</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_folder">
-    <property name="geometry">
-     <rect>
-      <x>470</x>
-      <y>130</y>
-      <width>85</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>檔案夾</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>130</y>
-      <width>281</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>刪除資料類型(必選，可複選):</string>
     </property>
    </widget>
   </widget>

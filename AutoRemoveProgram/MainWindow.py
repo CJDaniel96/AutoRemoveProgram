@@ -1,7 +1,7 @@
 from os.path import isfile, isdir
 
 from PyQt5.QtCore import pyqtSlot, QCoreApplication
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QCheckBox
 from PyQt5.uic import loadUi
 from numpy import array
 
@@ -49,6 +49,8 @@ class MainWindow(QMainWindow):
             self.msgBox.date_setting_box_error_message()
         elif isdir(self.lineEdit.text()) is False and isfile(self.lineEdit.text()) is False:
             self.msgBox.lineEdit_error_message()
+        elif isdir(self.lineEdit.text()) is True:
+            reply = self.msgBox
         else:
             reply = self.msgBox.auto_remove_message()
             if reply == self.msgBox.Save:
