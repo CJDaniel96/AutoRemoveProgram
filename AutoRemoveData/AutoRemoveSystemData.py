@@ -6,9 +6,9 @@ from time import localtime
 from PyQt5.QtCore import QThread
 
 
-class AutoRemoveData(QThread):
+class AutoRemoveSystemData(QThread):
     def __init__(self, remove_item_list, remove_setting_dialog):
-        super(AutoRemoveData, self).__init__()
+        super(AutoRemoveSystemData, self).__init__()
         self.localtime = None
         self.remove_item_list = remove_item_list
         self.remove_setting_dialog = remove_setting_dialog
@@ -22,6 +22,7 @@ class AutoRemoveData(QThread):
             if self.localtime.tm_hour == self.remove_setting_dialog.get_time_value().hour() and self.localtime.tm_min == self.remove_setting_dialog.get_time_value().minute():
                 if self.remove_item_list:
                     self.remove_data()
+                    self.finished()
 
     def remove_data(self):
         for item in self.remove_item_list:

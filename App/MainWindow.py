@@ -5,12 +5,14 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from numpy import array
 
-from AutoRemoveSystemData.AutoRemoveData import AutoRemoveData
-from AutoRemoveSystemData.MessageBox import MessageBox
+from AutoRemoveData.AutoRemoveDatabaseData import AutoRemoveDatabaseData
+from AutoRemoveData.AutoRemoveSystemData import AutoRemoveSystemData
+from Messages.MessageBox import MessageBox
 from String.NameString import NameString
 from String.PathString import PathString
-from AutoRemoveSystemData.Settings import CycleSettings, TimeSettings
-from AutoRemoveSystemData.SystemTrayIcon import SystemTrayIcon
+from Settings.TimeSettings import TimeSettings
+from Settings.CycleSettings import CycleSettings
+from Tray.SystemTrayIcon import SystemTrayIcon
 
 
 class MainWindow(QMainWindow):
@@ -31,7 +33,7 @@ class MainWindow(QMainWindow):
         self.remove_item_list = []
         self.read_remove_list()
         self.remove_list_display()
-        self.auto_remove_data = AutoRemoveData(self.remove_item_list, self.time_settings)
+        self.auto_remove_data = AutoRemoveSystemData(self.remove_item_list, self.time_settings)
         self.auto_remove_data.start()
 
         self.tray = SystemTrayIcon(self, self.time_settings, self.cycle_settings)
@@ -39,6 +41,11 @@ class MainWindow(QMainWindow):
         self.tray.activated.connect(self.system_tray_icon_activated)
 
         self.listWidget.itemDoubleClicked.connect(self.on_listWidget_itemDoubleClicked)
+
+        # DataBase Remove Data
+        self.database_select_date = None
+        self.database_remove_data = None
+        self.database_date_setting_box.addItems(self.date_setting_box_list)
 
     @pyqtSlot(int)
     def on_date_setting_box_activated(self, index):
@@ -50,8 +57,6 @@ class MainWindow(QMainWindow):
             self.msgBox.date_setting_box_error_message()
         elif isdir(self.lineEdit.text()) is False and isfile(self.lineEdit.text()) is False:
             self.msgBox.lineEdit_error_message()
-        elif isdir(self.lineEdit.text()) is True:
-            reply = self.msgBox
         else:
             reply = self.msgBox.auto_remove_message()
             if reply == self.msgBox.Save:
@@ -83,7 +88,6 @@ class MainWindow(QMainWindow):
     def on_exit_program_clicked(self):
         reply = self.msgBox.exit_program()
         if reply == self.msgBox.Yes:
-            self.auto_remove_data.finished()
             self.tray.setVisible(False)
             self.tray.hide()
             QCoreApplication.instance().quit()
@@ -122,3 +126,20 @@ class MainWindow(QMainWindow):
         if self.remove_item_list:
             for item in self.remove_item_list:
                 self.listWidget.addItems([item[0] + '\t' + item[1] + self.nameString.days_cycle])
+
+    @pyqtSlot(int)
+    def on_database_date_setting_box_activated(self, index):
+        self.database_select_date = self.date_setting_box_list[index]
+
+    @pyqtSlot()
+    def on_auto_remove_table_button_clicked(self):
+        if self.database_select_date is None or \
+                self.database_select_date == self.name_string.time_settings_list_default_text:
+            self.msgBox.date_setting_box_error_message()
+        else:
+            self.database_remove_data = AutoRemoveDatabaseData(self,
+                                                               self.serverLineEdit.text(),
+                                                               self.usernameLineEdit.text(),
+                                                               self.passwordLineEdit.text(),
+                                                               self.databaseLineEdit.text())
+            self.database_remove_data.start()

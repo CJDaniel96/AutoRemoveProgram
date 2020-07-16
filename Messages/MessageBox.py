@@ -73,3 +73,11 @@ class MessageBox(QMessageBox):
         self.setStandardButtons(QMessageBox.Retry)
         self.setDefaultButton(QMessageBox.Retry)
         self.exec_()
+
+    def connect_to_db_error_message(self):
+        self.setIcon(self.Critical)
+        self.setWindowTitle(self.name_string.error)
+        self.setText(self.name_string.connect_db_error_text)
+        self.setStandardButtons(QMessageBox.Retry)
+        self.setDefaultButton(QMessageBox.Retry)
+        self.exec_()
