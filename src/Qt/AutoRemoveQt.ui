@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>600</height>
+    <height>615</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -32,20 +32,20 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>25</x>
-      <y>10</y>
-      <width>550</width>
-      <height>550</height>
+      <x>0</x>
+      <y>0</y>
+      <width>600</width>
+      <height>531</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Times New Roman</family>
+      <family>標楷體</family>
       <pointsize>12</pointsize>
      </font>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="pc_tab">
      <attribute name="title">
@@ -73,7 +73,7 @@
      <widget class="QPushButton" name="auto_remove_button">
       <property name="geometry">
        <rect>
-        <x>420</x>
+        <x>480</x>
         <y>140</y>
         <width>100</width>
         <height>30</height>
@@ -93,7 +93,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>200</y>
+        <y>210</y>
         <width>500</width>
         <height>16</height>
        </rect>
@@ -108,31 +108,12 @@
        <string>自動刪除檔案路徑列表(雙擊可取消):</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="exit_program">
-      <property name="geometry">
-       <rect>
-        <x>420</x>
-        <y>480</y>
-        <width>100</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>標楷體</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>退出</string>
-      </property>
-     </widget>
      <widget class="QListWidget" name="listWidget">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>220</y>
-        <width>500</width>
+        <y>230</y>
+        <width>560</width>
         <height>250</height>
        </rect>
       </property>
@@ -142,7 +123,7 @@
        <rect>
         <x>20</x>
         <y>10</y>
-        <width>500</width>
+        <width>560</width>
         <height>16</height>
        </rect>
       </property>
@@ -177,7 +158,7 @@
        <rect>
         <x>20</x>
         <y>40</y>
-        <width>500</width>
+        <width>560</width>
         <height>30</height>
        </rect>
       </property>
@@ -215,58 +196,73 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>15</y>
+        <x>30</x>
+        <y>55</y>
         <width>70</width>
         <height>16</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+       </font>
+      </property>
       <property name="text">
-       <string>Host:</string>
+       <string>Server:</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>75</y>
-        <width>70</width>
+        <x>30</x>
+        <y>125</y>
+        <width>91</width>
         <height>16</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+       </font>
+      </property>
       <property name="text">
-       <string>User:</string>
+       <string>Username:</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>135</y>
+        <x>30</x>
+        <y>195</y>
         <width>91</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+       </font>
       </property>
       <property name="text">
        <string>Password:</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="hostLineEdit">
+     <widget class="QLineEdit" name="serverLineEdit">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>10</y>
-        <width>400</width>
+        <x>30</x>
+        <y>80</y>
+        <width>221</width>
         <height>30</height>
        </rect>
       </property>
      </widget>
-     <widget class="QLineEdit" name="userLineEdit">
+     <widget class="QLineEdit" name="usernameLineEdit">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>70</y>
-        <width>400</width>
+        <x>30</x>
+        <y>150</y>
+        <width>221</width>
         <height>30</height>
        </rect>
       </property>
@@ -274,9 +270,9 @@
      <widget class="QLineEdit" name="passwordLineEdit">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>130</y>
-        <width>400</width>
+        <x>30</x>
+        <y>220</y>
+        <width>221</width>
         <height>30</height>
        </rect>
       </property>
@@ -284,9 +280,9 @@
      <widget class="QLineEdit" name="databaseLineEdit">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>190</y>
-        <width>400</width>
+        <x>30</x>
+        <y>290</y>
+        <width>221</width>
         <height>30</height>
        </rect>
       </property>
@@ -294,17 +290,161 @@
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>195</y>
+        <x>30</x>
+        <y>265</y>
         <width>111</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+       </font>
       </property>
       <property name="text">
        <string>Database:</string>
       </property>
      </widget>
+     <widget class="QComboBox" name="database_date_setting_box">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>370</y>
+        <width>85</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>標楷體</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="auto_remove_table_button">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>430</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>標楷體</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>新增</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="date_name_2">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>370</y>
+        <width>47</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>標楷體</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>天</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="date_setting_2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>340</y>
+        <width>120</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>標楷體</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>時間週期設定:</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="table_listWidget">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>39</y>
+        <width>311</width>
+        <height>421</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="auto_remove_table_2">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>10</y>
+        <width>311</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>標楷體</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>自動刪除資料表列表(雙擊可取消):</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>10</y>
+        <width>221</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>標楷體</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>資料庫信息輸入</string>
+      </property>
+     </widget>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="exit_program">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>530</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>標楷體</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>退出</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
