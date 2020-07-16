@@ -3,8 +3,9 @@ from pyodbc import connect
 
 
 class AutoRemoveData(QThread):
-    def __init__(self, server, username, password, database):
+    def __init__(self, win, server, username, password, database):
         super(AutoRemoveData, self).__init__()
+        self.win = win
         self.server = server
         self.username = username
         self.password = password

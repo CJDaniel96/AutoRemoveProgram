@@ -2,8 +2,9 @@ from PyQt5.QtCore import QTime, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMainWindow
 from PyQt5.uic import loadUi
 
-from MessageBox import MessageBox
-from String import NameString, PathString
+from AutoRemoveSystemData.MessageBox import MessageBox
+from String.NameString import NameString
+from String.PathString import PathString
 
 
 class TimeSettings(QDialog):

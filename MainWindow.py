@@ -5,11 +5,12 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from numpy import array
 
-from AutoRemoveData import AutoRemoveData
-from MessageBox import MessageBox
-from String import NameString, PathString
-from Settings import CycleSettings, TimeSettings
-from SystemTrayIcon import SystemTrayIcon
+from AutoRemoveSystemData.AutoRemoveData import AutoRemoveData
+from AutoRemoveSystemData.MessageBox import MessageBox
+from String.NameString import NameString
+from String.PathString import PathString
+from AutoRemoveSystemData.Settings import CycleSettings, TimeSettings
+from AutoRemoveSystemData.SystemTrayIcon import SystemTrayIcon
 
 
 class MainWindow(QMainWindow):
@@ -82,6 +83,7 @@ class MainWindow(QMainWindow):
     def on_exit_program_clicked(self):
         reply = self.msgBox.exit_program()
         if reply == self.msgBox.Yes:
+            self.auto_remove_data.finished()
             self.tray.setVisible(False)
             self.tray.hide()
             QCoreApplication.instance().quit()

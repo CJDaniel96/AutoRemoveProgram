@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMessageBox
 
-from String import NameString
+from String.NameString import NameString
 
 
 class MessageBox(QMessageBox):
