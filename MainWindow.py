@@ -1,7 +1,7 @@
 from os.path import isfile, isdir
 
 from PyQt5.QtCore import pyqtSlot, QCoreApplication
-from PyQt5.QtWidgets import QMainWindow, QCheckBox
+from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from numpy import array
 

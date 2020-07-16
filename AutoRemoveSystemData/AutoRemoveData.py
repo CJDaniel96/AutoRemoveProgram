@@ -1,5 +1,5 @@
 from datetime import datetime
-from os import remove, walk
+from os import remove, listdir
 from os.path import getmtime, isfile, isdir, join
 from time import localtime
 
@@ -28,7 +28,7 @@ class AutoRemoveData(QThread):
             if isfile(item[0]):
                 self.remove_file(item)
             elif isdir(item[0]):
-                self.remove_dir_file(item)
+                self.remove_dir(item)
 
     def remove_file(self, file_item):
         file_time = localtime(getmtime(file_item[0]))
@@ -37,12 +37,11 @@ class AutoRemoveData(QThread):
         if interval.days >= int(file_item[1]):
             remove(file_item[0])
 
-    def remove_dir_file(self, dir_item):
+    def remove_dir(self, dir_item):
         files_list = []
-        for root, dirs, files in walk(dir_item[0]):
-            for f in files:
-                full_path = join(root, f)
-                files_list.extend([full_path])
+        for files in listdir(dir_item[0]):
+            full_path = join(dir_item[0], files)
+            files_list.extend([full_path])
         for each in files_list:
             each_file_time = localtime(getmtime(each))
             interval = datetime(self.localtime.tm_year, self.localtime.tm_mon, self.localtime.tm_mday) - datetime(
