@@ -3,8 +3,8 @@ from time import localtime
 from PyQt5.QtCore import QThread
 from pyodbc import connect, Error, OperationalError
 
-from Messages.MessageBox import MessageBox
-from String.SQLString import SQLString
+from Messages import MessageBox
+from String import SQLString
 
 
 class AutoRemoveDatabaseData(QThread):
