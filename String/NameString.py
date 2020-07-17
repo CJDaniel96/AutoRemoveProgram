@@ -29,5 +29,6 @@ class NameString:
         self.time_settings_list_default_text = '未選擇'
         self.cycle_settings_error_input_text = '您輸入的不是整數，請重新輸入!'
 
-        # Connect dataBase name String
+        # DataBase name String
         self.connect_db_error_text = '連線失敗，請檢察輸入是否正確!'
+        self.db_table_programming_error_text = '資料表不存在，或您沒有權限'

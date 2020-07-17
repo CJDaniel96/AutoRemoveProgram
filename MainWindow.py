@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from numpy import array
 
-from AutoRemoveData import AutoRemoveDatabaseData, AutoRemoveSystemData
+from AutoRemoveData import AutoRemoveDatabaseData, AutoRemoveSystemData, RemoveListAction
 from Messages import MessageBox
 from String import NameString, PathString
 from Settings import TimeSettings, CycleSettings
@@ -28,10 +28,20 @@ class MainWindow(QMainWindow):
         self.date_setting_box.addItems(self.date_setting_box_list)
 
         self.remove_item_list = []
-        self.read_remove_list()
-        self.remove_list_display()
+        self.remove_list_action = RemoveListAction()
+        self.remove_item_list = self.remove_list_action.read_remove_list
+        self.remove_list_action.remove_list_display(self.remove_item_list, self.listWidget)
+
         self.auto_remove_data = AutoRemoveSystemData(self.remove_item_list, self.time_settings)
+        self.database_remove_data = AutoRemoveDatabaseData(self,
+                                                           self.time_settings,
+                                                           self.serverLineEdit.text(),
+                                                           self.portLineEdit.text(),
+                                                           self.usernameLineEdit.text(),
+                                                           self.passwordLineEdit.text(),
+                                                           self.databaseLineEdit.text())
         self.auto_remove_data.start()
+        self.database_remove_data.start()
 
         self.tray = SystemTrayIcon(self, self.time_settings, self.cycle_settings)
         self.tray.show()
@@ -43,6 +53,8 @@ class MainWindow(QMainWindow):
         self.database_select_date = None
         self.database_remove_data = None
         self.database_date_setting_box.addItems(self.date_setting_box_list)
+
+        self.portLineEdit.setText('1433')
 
     @pyqtSlot(int)
     def on_date_setting_box_activated(self, index):
@@ -61,24 +73,24 @@ class MainWindow(QMainWindow):
                 if self.remove_item_list != [] and remove_item[0] in array(self.remove_item_list)[:, 0]:
                     reply = self.msgBox.remove_path_cover_message()
                     if reply == self.msgBox.Yes:
-                        row = self.remove_list_update(remove_item)
+                        row = self.remove_list_action.remove_list_update(self.remove_item_list, remove_item)
                         self.listWidget.takeItem(row)
                         self.listWidget.addItems(
                             [self.lineEdit.text() + '\t' + str(self.select_date) + self.name_string.days_cycle])
-                        self.save_remove_list()
+                        self.remove_list_action.save_remove_list(self.remove_item_list)
                 else:
                     self.listWidget.addItems(
                         [self.lineEdit.text() + '\t' + str(self.select_date) + self.name_string.days_cycle])
                     self.remove_item_list.append(remove_item)
                     self.auto_remove_data.update_data(self.remove_item_list)
-                    self.save_remove_list()
+                    self.remove_list_action.save_remove_list(self.remove_item_list)
 
     @pyqtSlot()
     def on_listWidget_itemDoubleClicked(self):
         reply = self.msgBox.listWidget_click_message()
         if reply == self.msgBox.Yes:
             self.remove_item_list.pop(self.listWidget.currentRow())
-            self.save_remove_list()
+            self.remove_list_action.save_remove_list(self.remove_item_list)
             self.listWidget.takeItem(self.listWidget.currentRow())
 
     @pyqtSlot()
@@ -93,37 +105,6 @@ class MainWindow(QMainWindow):
         if reason == self.tray.DoubleClick:
             self.show()
 
-    def remove_list_update(self, remove_item):
-        for idx, item in enumerate(self.remove_item_list):
-            if remove_item[0] in item[0]:
-                self.remove_item_list.pop(idx)
-                self.remove_item_list.append(remove_item)
-
-                return idx
-
-    def save_remove_list(self):
-        if not self.remove_item_list:
-            with open(self.path_string.remove_list_text, 'w') as f:
-                f.write('')
-        else:
-            with open(self.path_string.remove_list_text, 'w') as f:
-                for item in self.remove_item_list:
-                    f.write(item[0] + '\n')
-                    f.write(item[1] + '\n')
-
-    def read_remove_list(self):
-        if isfile(self.path_string.remove_list_text):
-            with open(self.path_string.remove_list_text, 'r') as f:
-                remove_list_txt = f.read().splitlines()
-            if remove_list_txt:
-                for i in range(0, len(remove_list_txt), 2):
-                    self.remove_item_list.append([remove_list_txt[i], remove_list_txt[i + 1]])
-
-    def remove_list_display(self):
-        if self.remove_item_list:
-            for item in self.remove_item_list:
-                self.listWidget.addItems([item[0] + '\t' + item[1] + self.nameString.days_cycle])
-
     @pyqtSlot(int)
     def on_database_date_setting_box_activated(self, index):
         self.database_select_date = self.date_setting_box_list[index]
@@ -132,11 +113,6 @@ class MainWindow(QMainWindow):
     def on_auto_remove_table_button_clicked(self):
         if self.database_select_date is None or \
                 self.database_select_date == self.name_string.time_settings_list_default_text:
-            self.msgBox.date_setting_box_error_message()
-        else:
-            self.database_remove_data = AutoRemoveDatabaseData(self,
-                                                               self.serverLineEdit.text(),
-                                                               self.usernameLineEdit.text(),
-                                                               self.passwordLineEdit.text(),
-                                                               self.databaseLineEdit.text())
-            self.database_remove_data.start()
+            self.msgBox.connect_to_db_error_message()
+        elif self.database_remove_data.connect_db():
+            self.table_listWidget.addItems()

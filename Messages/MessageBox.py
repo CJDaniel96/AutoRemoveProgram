@@ -78,6 +78,18 @@ class MessageBox(QMessageBox):
         self.setIcon(self.Critical)
         self.setWindowTitle(self.name_string.error)
         self.setText(self.name_string.connect_db_error_text)
-        self.setStandardButtons(QMessageBox.Retry)
+        self.setStandardButtons(QMessageBox.Retry | QMessageBox.Cancel)
         self.setDefaultButton(QMessageBox.Retry)
-        self.exec_()
+        reply = self.exec_()
+
+        return reply
+
+    def drop_db_table_error_message(self):
+        self.setIcon(self.Critical)
+        self.setWindowTitle(self.name_string.error)
+        self.setText(self.name_string.db_table_programming_error_text)
+        self.setStandardButtons(QMessageBox.Ignore | QMessageBox.Discard)
+        self.setStandardButtons(QMessageBox.Discard)
+        reply = self.exec_()
+
+        return reply

@@ -215,7 +215,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>125</y>
+        <y>192</y>
         <width>91</width>
         <height>16</height>
        </rect>
@@ -233,7 +233,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>195</y>
+        <y>262</y>
         <width>91</width>
         <height>16</height>
        </rect>
@@ -261,7 +261,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>150</y>
+        <y>217</y>
         <width>221</width>
         <height>30</height>
        </rect>
@@ -271,7 +271,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>220</y>
+        <y>287</y>
         <width>221</width>
         <height>30</height>
        </rect>
@@ -281,7 +281,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>290</y>
+        <y>357</y>
         <width>221</width>
         <height>30</height>
        </rect>
@@ -291,7 +291,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>265</y>
+        <y>332</y>
         <width>111</width>
         <height>16</height>
        </rect>
@@ -309,7 +309,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>370</y>
+        <y>432</y>
         <width>85</width>
         <height>25</height>
        </rect>
@@ -324,7 +324,7 @@
      <widget class="QPushButton" name="auto_remove_table_button">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>170</x>
         <y>430</y>
         <width>100</width>
         <height>30</height>
@@ -343,8 +343,8 @@
      <widget class="QLabel" name="date_name_2">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>370</y>
+        <x>130</x>
+        <y>432</y>
         <width>47</width>
         <height>21</height>
        </rect>
@@ -363,7 +363,7 @@
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>340</y>
+        <y>402</y>
         <width>120</width>
         <height>16</height>
        </rect>
@@ -423,6 +423,34 @@
       </property>
       <property name="text">
        <string>資料庫信息輸入</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>125</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>Port:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="portLineEdit">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>145</y>
+        <width>221</width>
+        <height>30</height>
+       </rect>
       </property>
      </widget>
     </widget>
