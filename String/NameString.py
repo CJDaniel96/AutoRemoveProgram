@@ -32,3 +32,8 @@ class NameString:
         # DataBase name String
         self.connect_db_error_text = '連線失敗，請檢察輸入是否正確!'
         self.db_table_programming_error_text = '資料表不存在，或您沒有權限'
+
+        # Log format
+        self.logger_format = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        self.log_date_format = '%Y%m%d %H:%M:%S'
+        self.remove_data_success_log_msg = 'Remove Success!'

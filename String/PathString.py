@@ -19,3 +19,6 @@ class PathString:
         # TxT Path
         self.remove_list_text = r'.\src\Table\RemoveList.txt'
         self.cycle_list_path_string = r'.\src\Table\CycleList.txt'
+
+        # Event Log Path
+        self.event_log_path = r'src\Log'

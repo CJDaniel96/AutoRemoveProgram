@@ -5,6 +5,8 @@ from time import localtime
 
 from PyQt5.QtCore import QThread
 
+from Messages import EventLog
+
 
 class AutoRemoveSystemData(QThread):
     def __init__(self, remove_item_list, remove_setting_dialog):
@@ -12,6 +14,7 @@ class AutoRemoveSystemData(QThread):
         self.localtime = None
         self.remove_item_list = remove_item_list
         self.remove_setting_dialog = remove_setting_dialog
+        self.event_log = EventLog()
 
     def update_data(self, remove_item_list):
         self.remove_item_list = remove_item_list
@@ -38,6 +41,7 @@ class AutoRemoveSystemData(QThread):
             file_time.tm_year, file_time.tm_mon, file_time.tm_mday)
         if interval.days >= int(file_item[1]):
             remove(file_item[0])
+            self.event_log.logger(file_item[0])
 
     def remove_dir(self, dir_item):
         files_list = []
@@ -50,3 +54,4 @@ class AutoRemoveSystemData(QThread):
                 each_file_time.tm_year, each_file_time.tm_mon, each_file_time.tm_mday)
             if interval.days >= int(dir_item[1]):
                 remove(each)
+                self.event_log.logger(each)

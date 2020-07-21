@@ -4,13 +4,14 @@ from time import time, localtime
 from PyQt5.QtCore import QThread
 from pyodbc import connect, Error, OperationalError, ProgrammingError
 
-from Messages import MessageBox
+from Messages import MessageBox, EventLog
 from String import SQLString
 
 
 class AutoRemoveDatabaseData(QThread):
     def __init__(self, win, remove_setting_dialog, server, port, username, password, database):
         super(AutoRemoveDatabaseData, self).__init__()
+        self.event_log = EventLog()
         self.win = win
         self.remove_setting_dialog = remove_setting_dialog
         self.server = server
@@ -76,6 +77,7 @@ class AutoRemoveDatabaseData(QThread):
                 try:
                     self.cursor.execute(self.sql_string.drop_table + each_table[0] + ';')
                     self.db.commit()
+                    self.event_log.logger(self.database+'.'+each_table[0])
                 except ProgrammingError:
                     reply = self.msgBox.drop_db_table_error_message()
                     if reply is self.msgBox.Ignore:
