@@ -1,3 +1,5 @@
+from os.path import abspath
+
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QMainWindow
 from PyQt5.uic import loadUi
@@ -14,7 +16,7 @@ class CycleSettings(QDialog):
         self.name_string = NameString()
         self.path_string = PathString()
         self.msgBox = MessageBox()
-        loadUi(self.path_string.cycle_settings_ui_path_string, self)
+        loadUi(abspath(self.path_string.cycle_settings_ui_path_string), self)
 
         self.cycle_list = self.read_cycle_list()
         self.update_cycle_list = self.cycle_list
@@ -22,7 +24,7 @@ class CycleSettings(QDialog):
         self.listWidget.addItems(self.cycle_list[1:])
 
     def read_cycle_list(self):
-        with open(self.path_string.cycle_list_path_string, 'r') as f:
+        with open(abspath(self.path_string.cycle_list_path_string), 'r') as f:
             return f.read().splitlines()
 
     def get_cycle_list(self):
@@ -56,6 +58,6 @@ class CycleSettings(QDialog):
         self.listWidget.addItems(self.cycle_list[1:])
 
     def save_cycle_list(self):
-        with open(self.path_string.cycle_list_path_string, 'w') as f:
+        with open(abspath(self.path_string.cycle_list_path_string), 'w') as f:
             for each in self.cycle_list:
                 f.write(each + '\n')

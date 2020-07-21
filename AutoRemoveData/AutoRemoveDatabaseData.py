@@ -5,20 +5,17 @@ from PyQt5.QtCore import QThread
 from pyodbc import connect, Error, OperationalError, ProgrammingError
 
 from Messages import MessageBox, EventLog
-from String import SQLString
+from String import SQLString, NameString
 
 
 class AutoRemoveDatabaseData(QThread):
-    def __init__(self, win, remove_setting_dialog, server, port, username, password, database):
+    def __init__(self, win, remove_setting_dialog, remove_db_list):
         super(AutoRemoveDatabaseData, self).__init__()
+        self.name_string = NameString()
         self.event_log = EventLog()
         self.win = win
         self.remove_setting_dialog = remove_setting_dialog
-        self.server = server
-        self.port = port
-        self.username = username
-        self.password = password
-        self.database = database
+        self.remove_db_list = remove_db_list
 
         self.db = None
         self.cursor = None
@@ -29,39 +26,42 @@ class AutoRemoveDatabaseData(QThread):
         self.msgBox = MessageBox()
         self.sql_string = SQLString()
 
+    def update_data(self, remove_db_list):
+        self.remove_db_list = remove_db_list
+
     def run(self):
         while True:
             self.localtime = localtime()
             if self.localtime.tm_hour == self.remove_setting_dialog.get_time_value().hour() and \
                     self.localtime.tm_min == self.remove_setting_dialog.get_time_value().minute():
-                if self.remove_tables_list:
-                    if self.connect_db():
-                        self.remove_tables()
-                        self.finished()
+                if self.remove_db_list:
+                    for item in self.remove_db_list:
+                        if self.connect_db(item[0], item[1], item[2], item[3], item[4]):
+                            self.remove_tables(item[0], item[4])
+                            self.finished()
 
-    def update_remove_tables(self, remove_tables_list):
-        self.remove_tables_list = remove_tables_list
-
-    def connect_db(self):
+    def connect_db(self, server, port, username, password, database):
         while True:
             try:
                 self.db = connect(
-                    'DRIVER={SQL Server};SERVER=' + self.server +
-                    ',' + self.port +
-                    ';DATABASE=' + self.database +
-                    ';UID=' + self.username +
-                    ';PWD=' + self.password)
+                    'DRIVER={SQL Server};SERVER=' + server +
+                    ',' + port +
+                    ';DATABASE=' + database +
+                    ';UID=' + username +
+                    ';PWD=' + password, timeout=1)
+                self.event_log.logger(self.name_string.connect_db_success_log_msg)
                 self.cursor = self.db.cursor()
 
                 return True
 
             except (Error, OperationalError):
+                self.event_log.logger(self.name_string.connect_db_fail_log_msg)
                 reply = self.msgBox.connect_to_db_error_message()
                 if reply is not self.msgBox.Retry:
 
                     return False
 
-    def remove_tables(self):
+    def remove_tables(self, server, database):
         self.localtime = datetime.fromtimestamp(time())
         self.cursor.execute(self.sql_string.select_create_table_date)
         tables = []
@@ -77,7 +77,7 @@ class AutoRemoveDatabaseData(QThread):
                 try:
                     self.cursor.execute(self.sql_string.drop_table + each_table[0] + ';')
                     self.db.commit()
-                    self.event_log.logger(self.database+'.'+each_table[0])
+                    self.event_log.logger(server + database + '.' + each_table[0])
                 except ProgrammingError:
                     reply = self.msgBox.drop_db_table_error_message()
                     if reply is self.msgBox.Ignore:

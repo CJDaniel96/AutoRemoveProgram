@@ -1,4 +1,4 @@
-from os.path import isfile, isdir
+from os.path import isfile, isdir, abspath
 
 from PyQt5.QtCore import pyqtSlot, QCoreApplication
 from PyQt5.QtWidgets import QMainWindow
@@ -6,6 +6,7 @@ from PyQt5.uic import loadUi
 from numpy import array
 
 from AutoRemoveData import AutoRemoveDatabaseData, AutoRemoveSystemData, RemoveListAction
+from AutoRemoveData.RemoveAction import RemoveDatabaseAction
 from Messages import MessageBox
 from String import NameString, PathString
 from Settings import TimeSettings, CycleSettings
@@ -17,7 +18,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.name_string = NameString()
         self.path_string = PathString()
-        loadUi(self.path_string.win_ui_path_string, self)
+        loadUi(abspath(self.path_string.win_ui_path_string), self)
 
         self.cycle_settings = CycleSettings(self)
         self.time_settings = TimeSettings()
@@ -29,19 +30,11 @@ class MainWindow(QMainWindow):
 
         self.remove_item_list = []
         self.remove_list_action = RemoveListAction()
-        self.remove_item_list = self.remove_list_action.read_remove_list
+        self.remove_item_list = self.remove_list_action.read_remove_list()
         self.remove_list_action.remove_list_display(self.remove_item_list, self.listWidget)
 
         self.auto_remove_data = AutoRemoveSystemData(self.remove_item_list, self.time_settings)
-        self.database_remove_data = AutoRemoveDatabaseData(self,
-                                                           self.time_settings,
-                                                           self.serverLineEdit.text(),
-                                                           self.portLineEdit.text(),
-                                                           self.usernameLineEdit.text(),
-                                                           self.passwordLineEdit.text(),
-                                                           self.databaseLineEdit.text())
         self.auto_remove_data.start()
-        self.database_remove_data.start()
 
         self.tray = SystemTrayIcon(self, self.time_settings, self.cycle_settings)
         self.tray.show()
@@ -51,10 +44,20 @@ class MainWindow(QMainWindow):
 
         # DataBase Remove Data
         self.database_select_date = None
-        self.database_remove_data = None
         self.database_date_setting_box.addItems(self.date_setting_box_list)
 
         self.portLineEdit.setText('1433')
+        self.remove_db_list = []
+        self.remove_db_action = RemoveDatabaseAction()
+        self.remove_db_list = self.remove_db_action.read_remove_list()
+        self.remove_db_action.remove_list_display(self.remove_db_list, self.table_listWidget)
+
+        self.database_remove_data = AutoRemoveDatabaseData(self,
+                                                           self.time_settings,
+                                                           self.remove_db_list)
+        self.database_remove_data.start()
+
+        self.table_listWidget.itemDoubleClicked.connect(self.on_table_listWidget_itemDoubleClicked)
 
     @pyqtSlot(int)
     def on_date_setting_box_activated(self, index):
@@ -114,5 +117,52 @@ class MainWindow(QMainWindow):
         if self.database_select_date is None or \
                 self.database_select_date == self.name_string.time_settings_list_default_text:
             self.msgBox.connect_to_db_error_message()
-        elif self.database_remove_data.connect_db():
-            self.table_listWidget.addItems()
+        else:
+            reply = self.msgBox.auto_remove_message()
+            if reply == self.msgBox.Save:
+                remove_item = [self.serverLineEdit.text(),
+                               self.portLineEdit.text(),
+                               self.usernameLineEdit.text(),
+                               self.passwordLineEdit.text(),
+                               self.databaseLineEdit.text(),
+                               self.database_select_date]
+                if self.remove_db_list != [] and remove_item[::4] in array(self.remove_db_list)[:, ::4]:
+                    reply = self.msgBox.remove_path_cover_message()
+                    if reply == self.msgBox.Yes:
+                        if self.connect_db_test():
+                            row = self.remove_db_action.remove_list_update(self.remove_db_list, remove_item)
+                            self.table_listWidget.takeItem(row)
+                            self.table_listWidget.addItems([self.serverLineEdit.text() +
+                                                            '.' + self.databaseLineEdit.text() +
+                                                            '\t' + self.database_select_date +
+                                                            self.name_string.days_cycle])
+                            self.remove_db_action.save_remove_list(self.remove_db_list)
+
+                else:
+                    if self.connect_db_test():
+                        self.table_listWidget.addItems([self.serverLineEdit.text() +
+                                                        '.' + self.databaseLineEdit.text() +
+                                                        '\t' + self.database_select_date +
+                                                        self.name_string.days_cycle])
+                        self.remove_db_list.append(remove_item)
+                        self.database_remove_data.update_data(self.remove_db_list)
+                        self.remove_db_action.save_remove_list(self.remove_db_list)
+
+    @pyqtSlot()
+    def on_table_listWidget_itemDoubleClicked(self):
+        reply = self.msgBox.listWidget_click_message()
+        if reply == self.msgBox.Yes:
+            self.remove_db_list.pop(self.table_listWidget.currentRow())
+            self.remove_db_action.save_remove_list(self.remove_db_list)
+            self.table_listWidget.takeItem(self.table_listWidget.currentRow())
+
+    def connect_db_test(self):
+        if self.database_remove_data.connect_db(self.serverLineEdit.text(),
+                                                self.portLineEdit.text(),
+                                                self.usernameLineEdit.text(),
+                                                self.passwordLineEdit.text(),
+                                                self.databaseLineEdit.text()):
+            return True
+
+        else:
+            return False
