@@ -37,8 +37,9 @@ class AutoRemoveDatabaseData(QThread):
                 if self.remove_db_list:
                     for item in self.remove_db_list:
                         if self.connect_db(item[0], item[1], item[2], item[3], item[4]):
-                            self.remove_tables(item[0], item[4])
-                            self.finished()
+                            self.remove_tables(item[0], item[4], item[5])
+                    self.quit()
+                    break
 
     def connect_db(self, server, port, username, password, database):
         while True:
@@ -49,9 +50,8 @@ class AutoRemoveDatabaseData(QThread):
                     ';DATABASE=' + database +
                     ';UID=' + username +
                     ';PWD=' + password, timeout=1)
-                self.event_log.logger(self.name_string.connect_db_success_log_msg)
                 self.cursor = self.db.cursor()
-
+                self.event_log.logger(self.name_string.connect_db_success_log_msg)
                 return True
 
             except (Error, OperationalError):
@@ -61,7 +61,7 @@ class AutoRemoveDatabaseData(QThread):
 
                     return False
 
-    def remove_tables(self, server, database):
+    def remove_tables(self, server, database, cycle_time):
         self.localtime = datetime.fromtimestamp(time())
         self.cursor.execute(self.sql_string.select_create_table_date)
         tables = []
@@ -73,11 +73,11 @@ class AutoRemoveDatabaseData(QThread):
         for each_table in tables:
             self.table_create_time = each_table[7]
             time_lag = self.localtime - self.table_create_time
-            if time_lag.days >= self.remove_cycle:
+            if time_lag.days >= int(cycle_time):
                 try:
                     self.cursor.execute(self.sql_string.drop_table + each_table[0] + ';')
                     self.db.commit()
-                    self.event_log.logger(server + database + '.' + each_table[0])
+                    self.event_log.logger(server + database + '.' + each_table[0] + self.name_string.remove_data_success_log_msg)
                 except ProgrammingError:
                     reply = self.msgBox.drop_db_table_error_message()
                     if reply is self.msgBox.Ignore:

@@ -80,7 +80,7 @@ class RemoveDatabaseAction:
             with open(abspath(self.path_string.remove_db_text), 'r') as f:
                 remove_list_txt = f.read().splitlines()
             if remove_list_txt:
-                for i in range(0, len(remove_list_txt), 4):
+                for i in range(0, len(remove_list_txt), 6):
                     remove_db_list.append([remove_list_txt[i],
                                            remove_list_txt[i + 1],
                                            remove_list_txt[i + 2],

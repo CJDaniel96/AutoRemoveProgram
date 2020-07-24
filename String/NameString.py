@@ -36,6 +36,6 @@ class NameString:
         # Log format
         self.logger_format = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
         self.log_date_format = '%Y%m%d %H:%M:%S'
-        self.remove_data_success_log_msg = 'Remove Success!'
+        self.remove_data_success_log_msg = ' Remove Success!'
         self.connect_db_success_log_msg = 'Connect to the Database Success!'
         self.connect_db_fail_log_msg = 'Connect to the Database Fail!'

@@ -28,7 +28,7 @@ class AutoRemoveSystemData(QThread):
                     self.localtime.tm_min == self.remove_setting_dialog.get_time_value().minute():
                 if self.remove_item_list:
                     self.remove_data()
-                    self.finished()
+                    self.quit()
 
     def remove_data(self):
         for item in self.remove_item_list:
