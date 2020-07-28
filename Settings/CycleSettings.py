@@ -1,7 +1,7 @@
 from os.path import abspath
 
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QDialog, QMainWindow
+from PyQt5.QtWidgets import QDialog
 from PyQt5.uic import loadUi
 
 from Messages.MessageBox import MessageBox
@@ -10,7 +10,7 @@ from String.PathString import PathString
 
 
 class CycleSettings(QDialog):
-    def __init__(self, win: QMainWindow):
+    def __init__(self, win):
         super(CycleSettings, self).__init__()
         self.win = win
         self.name_string = NameString()
@@ -22,6 +22,8 @@ class CycleSettings(QDialog):
         self.update_cycle_list = self.cycle_list
         self.cycle_buf = self.update_cycle_list[1:]
         self.listWidget.addItems(self.cycle_list[1:])
+
+        self.listWidget.itemDoubleClicked.connect(self.on_listWidget_itemDoubleClicked)
 
     def read_cycle_list(self):
         with open(abspath(self.path_string.cycle_list_path_string), 'r') as f:
@@ -36,6 +38,7 @@ class CycleSettings(QDialog):
             int(self.lineEdit.text())
         except ValueError:
             self.msgBox.cycle_setting_input_error_message()
+            return 0
         self.cycle_buf.append((str(self.lineEdit.text())))
         self.cycle_buf = list(map(int, self.cycle_buf))
         self.cycle_buf.sort()
@@ -48,6 +51,9 @@ class CycleSettings(QDialog):
     @pyqtSlot()
     def on_buttonBox_accepted(self):
         self.cycle_list = self.update_cycle_list
+        self.win.date_setting_box_list = self.cycle_list
+        self.win.date_setting_box.clear()
+        self.win.date_setting_box.addItems(self.win.date_setting_box_list)
         self.save_cycle_list()
 
     @pyqtSlot()
@@ -56,6 +62,14 @@ class CycleSettings(QDialog):
         self.lineEdit.clear()
         self.listWidget.clear()
         self.listWidget.addItems(self.cycle_list[1:])
+
+    @pyqtSlot()
+    def on_listWidget_itemDoubleClicked(self):
+        reply = self.msgBox.listWidget_click_message()
+        if reply == self.msgBox.Yes:
+            self.update_cycle_list.pop(self.listWidget.currentRow() + 1)
+            self.cycle_list = self.update_cycle_list
+            self.listWidget.takeItem(self.listWidget.currentRow())
 
     def save_cycle_list(self):
         with open(abspath(self.path_string.cycle_list_path_string), 'w') as f:

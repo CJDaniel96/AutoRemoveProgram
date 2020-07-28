@@ -55,7 +55,7 @@
       <property name="geometry">
        <rect>
         <x>250</x>
-        <y>103</y>
+        <y>120</y>
         <width>47</width>
         <height>21</height>
        </rect>
@@ -74,7 +74,7 @@
       <property name="geometry">
        <rect>
         <x>480</x>
-        <y>140</y>
+        <y>150</y>
         <width>100</width>
         <height>30</height>
        </rect>
@@ -108,16 +108,6 @@
        <string>自動刪除檔案路徑列表(雙擊可取消):</string>
       </property>
      </widget>
-     <widget class="QListWidget" name="listWidget">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>230</y>
-        <width>560</width>
-        <height>250</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QLabel" name="auto_remove_path">
       <property name="geometry">
        <rect>
@@ -141,7 +131,7 @@
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>100</y>
+        <y>117</y>
         <width>85</width>
         <height>25</height>
        </rect>
@@ -173,7 +163,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>103</y>
+        <y>120</y>
         <width>120</width>
         <height>16</height>
        </rect>
@@ -186,6 +176,42 @@
       </property>
       <property name="text">
        <string>時間週期設定:</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="file_select">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>80</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>檔案選擇</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="dir_select">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>80</y>
+        <width>91</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>檔案夾選擇</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>230</y>
+        <width>560</width>
+        <height>250</height>
+       </rect>
       </property>
      </widget>
     </widget>
@@ -481,7 +507,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

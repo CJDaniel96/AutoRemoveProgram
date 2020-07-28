@@ -1,7 +1,8 @@
 from os.path import isfile, isdir, abspath
 
 from PyQt5.QtCore import pyqtSlot, QCoreApplication
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QFileDialog, QListWidgetItem
 from PyQt5.uic import loadUi
 from numpy import array
 
@@ -24,6 +25,7 @@ class MainWindow(QMainWindow):
         self.time_settings = TimeSettings()
         self.msgBox = MessageBox()
 
+        self.file_path = QFileDialog()
         self.select_date = None
         self.date_setting_box_list = self.cycle_settings.get_cycle_list()
         self.date_setting_box.addItems(self.date_setting_box_list)
@@ -40,6 +42,9 @@ class MainWindow(QMainWindow):
         self.tray.show()
         self.tray.activated.connect(self.system_tray_icon_activated)
 
+        self.font = QFont('Monospace')
+        self.font.setStyleHint(QFont.TypeWriter)
+        self.listWidget.setFont(self.font)
         self.listWidget.itemDoubleClicked.connect(self.on_listWidget_itemDoubleClicked)
 
         # DataBase Remove Data
@@ -47,17 +52,27 @@ class MainWindow(QMainWindow):
         self.database_date_setting_box.addItems(self.date_setting_box_list)
 
         self.portLineEdit.setText('1433')
+        self.passwordLineEdit.setEchoMode(QLineEdit.Password)
+
         self.remove_db_list = []
         self.remove_db_action = RemoveDatabaseAction()
         self.remove_db_list = self.remove_db_action.read_remove_list()
         self.remove_db_action.remove_list_display(self.remove_db_list, self.table_listWidget)
 
-        self.database_remove_data = AutoRemoveDatabaseData(self,
-                                                           self.time_settings,
-                                                           self.remove_db_list)
+        self.database_remove_data = AutoRemoveDatabaseData(self.time_settings, self.remove_db_list)
         self.database_remove_data.start()
 
         self.table_listWidget.itemDoubleClicked.connect(self.on_table_listWidget_itemDoubleClicked)
+
+    @pyqtSlot()
+    def on_file_select_clicked(self):
+        file_path_text = self.file_path.getOpenFileName(self)
+        self.lineEdit.setText(file_path_text[0])
+
+    @pyqtSlot()
+    def on_dir_select_clicked(self):
+        dir_path_text = self.file_path.getExistingDirectory(self)
+        self.lineEdit.setText(dir_path_text)
 
     @pyqtSlot(int)
     def on_date_setting_box_activated(self, index):
@@ -79,11 +94,11 @@ class MainWindow(QMainWindow):
                         row = self.remove_list_action.remove_list_update(self.remove_item_list, remove_item)
                         self.listWidget.takeItem(row)
                         self.listWidget.addItems(
-                            [self.lineEdit.text() + '\t' + str(self.select_date) + self.name_string.days_cycle])
+                            ['%-60s %4s %s' % (self.lineEdit.text(), str(self.select_date), self.name_string.days_cycle)])
                         self.remove_list_action.save_remove_list(self.remove_item_list)
                 else:
                     self.listWidget.addItems(
-                        [self.lineEdit.text() + '\t' + str(self.select_date) + self.name_string.days_cycle])
+                        ['%-60s %4s %s' % (self.lineEdit.text(), str(self.select_date), self.name_string.days_cycle)])
                     self.remove_item_list.append(remove_item)
                     self.auto_remove_data.update_data(self.remove_item_list)
                     self.remove_list_action.save_remove_list(self.remove_item_list)

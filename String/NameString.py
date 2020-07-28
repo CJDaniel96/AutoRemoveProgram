@@ -39,3 +39,4 @@ class NameString:
         self.remove_data_success_log_msg = ' Remove Success!'
         self.connect_db_success_log_msg = 'Connect to the Database Success!'
         self.connect_db_fail_log_msg = 'Connect to the Database Fail!'
+        self.permission_error_log_msg = 'Not the data permission!'

@@ -48,7 +48,7 @@ class RemoveListAction:
     def remove_list_display(self, remove_item_list, listWidget):
         if remove_item_list:
             for item in remove_item_list:
-                listWidget.addItems([item[0] + '\t' + item[1] + self.name_string.days_cycle])
+                listWidget.addItem('%-60s %4s %s' % (item[0], item[1], self.name_string.days_cycle))
 
 
 class RemoveDatabaseAction:

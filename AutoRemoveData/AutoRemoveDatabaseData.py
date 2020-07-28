@@ -9,11 +9,10 @@ from String import SQLString, NameString
 
 
 class AutoRemoveDatabaseData(QThread):
-    def __init__(self, win, remove_setting_dialog, remove_db_list):
+    def __init__(self, remove_setting_dialog, remove_db_list):
         super(AutoRemoveDatabaseData, self).__init__()
         self.name_string = NameString()
         self.event_log = EventLog()
-        self.win = win
         self.remove_setting_dialog = remove_setting_dialog
         self.remove_db_list = remove_db_list
 
@@ -38,8 +37,6 @@ class AutoRemoveDatabaseData(QThread):
                     for item in self.remove_db_list:
                         if self.connect_db(item[0], item[1], item[2], item[3], item[4]):
                             self.remove_tables(item[0], item[4], item[5])
-                    self.quit()
-                    break
 
     def connect_db(self, server, port, username, password, database):
         while True:
@@ -74,13 +71,7 @@ class AutoRemoveDatabaseData(QThread):
             self.table_create_time = each_table[7]
             time_lag = self.localtime - self.table_create_time
             if time_lag.days >= int(cycle_time):
-                try:
-                    self.cursor.execute(self.sql_string.drop_table + each_table[0] + ';')
-                    self.db.commit()
-                    self.event_log.logger(server + database + '.' + each_table[0] + self.name_string.remove_data_success_log_msg)
-                except ProgrammingError:
-                    reply = self.msgBox.drop_db_table_error_message()
-                    if reply is self.msgBox.Ignore:
-                        continue
-                    else:
-                        break
+                self.cursor.execute(self.sql_string.drop_table + '[' + each_table[0] + '];')
+                self.db.commit()
+                self.event_log.logger(server + '.' + database + '.' + each_table[0] + ' ' +
+                                      self.name_string.remove_data_success_log_msg)
