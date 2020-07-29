@@ -17,10 +17,13 @@ class NameString:
         self.exit_program_text = '程式正在退出'
         self.exit_program_informativeText = '是否要退出程式?'
         self.error = '錯誤'
+        self.question = '問題'
+        self.warning = '警告'
         self.error_file_path = '檔案路徑不正確!!!'
         self.listWidget_click_message_text = '是否刪除此指令?'
         self.listWidget_click_message_informativeText = '確認請按Yes'
         self.remove_item_cover_text = '您要覆蓋之前已在此路徑的指令嗎?'
+        self.input_none_error_text = '輸入不能為空!!!'
 
         # Wait remove table name string
         self.remove_program_text = 'Auto Remove Program'

@@ -1,4 +1,3 @@
-from os import mkdir
 from os.path import isfile, abspath
 
 from String import PathString, NameString
@@ -50,6 +49,19 @@ class RemoveListAction:
             for item in remove_item_list:
                 listWidget.addItem('%-60s %4s %s' % (item[0], item[1], self.name_string.days_cycle))
 
+    @staticmethod
+    def remove_rules(remove_text):
+        if len(remove_text.split('\\')) == 1:
+            if remove_text.split('\\')[0] is not remove_text:
+                return False
+        elif len(remove_text.split('/')) == 1:
+            if remove_text.split('/')[0] is not remove_text:
+                return False
+        elif len(remove_text) < 3:
+            return False
+        else:
+            return True
+
 
 class RemoveDatabaseAction:
     def __init__(self):
@@ -100,4 +112,4 @@ class RemoveDatabaseAction:
     def remove_list_display(self, remove_db_list, table_listWidget):
         if remove_db_list:
             for item in remove_db_list:
-                table_listWidget.addItems([item[0] + '.' + item[4] + '\t' + item[5] + self.name_string.days_cycle])
+                table_listWidget.addItems([item[0] + '.' + item[4] + '%12s' % item[5] + self.name_string.days_cycle])

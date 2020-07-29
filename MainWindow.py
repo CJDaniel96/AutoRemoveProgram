@@ -62,6 +62,7 @@ class MainWindow(QMainWindow):
         self.database_remove_data = AutoRemoveDatabaseData(self.time_settings, self.remove_db_list)
         self.database_remove_data.start()
 
+        self.table_listWidget.setFont(self.font)
         self.table_listWidget.itemDoubleClicked.connect(self.on_table_listWidget_itemDoubleClicked)
 
     @pyqtSlot()
@@ -83,6 +84,8 @@ class MainWindow(QMainWindow):
         if self.select_date is None or self.select_date == self.name_string.time_settings_list_default_text:
             self.msgBox.date_setting_box_error_message()
         elif isdir(self.lineEdit.text()) is False and isfile(self.lineEdit.text()) is False:
+            self.msgBox.lineEdit_error_message()
+        elif not self.remove_list_action.remove_rules(self.lineEdit.text()):
             self.msgBox.lineEdit_error_message()
         else:
             reply = self.msgBox.auto_remove_message()
@@ -131,7 +134,7 @@ class MainWindow(QMainWindow):
     def on_auto_remove_table_button_clicked(self):
         if self.database_select_date is None or \
                 self.database_select_date == self.name_string.time_settings_list_default_text:
-            self.msgBox.connect_to_db_error_message()
+            self.msgBox.input_none_error_message()
         else:
             reply = self.msgBox.auto_remove_message()
             if reply == self.msgBox.Save:
@@ -149,7 +152,7 @@ class MainWindow(QMainWindow):
                             self.table_listWidget.takeItem(row)
                             self.table_listWidget.addItems([self.serverLineEdit.text() +
                                                             '.' + self.databaseLineEdit.text() +
-                                                            '\t' + self.database_select_date +
+                                                            '%12s' % self.database_select_date +
                                                             self.name_string.days_cycle])
                             self.remove_db_action.save_remove_list(self.remove_db_list)
 
@@ -157,7 +160,7 @@ class MainWindow(QMainWindow):
                     if self.connect_db_test():
                         self.table_listWidget.addItems([self.serverLineEdit.text() +
                                                         '.' + self.databaseLineEdit.text() +
-                                                        '\t' + self.database_select_date +
+                                                        '%12s' % self.database_select_date +
                                                         self.name_string.days_cycle])
                         self.remove_db_list.append(remove_item)
                         self.database_remove_data.update_data(self.remove_db_list)

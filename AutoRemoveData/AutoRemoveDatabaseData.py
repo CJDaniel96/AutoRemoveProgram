@@ -2,7 +2,7 @@ from datetime import datetime
 from time import time, localtime
 
 from PyQt5.QtCore import QThread
-from pyodbc import connect, Error, OperationalError, ProgrammingError
+from pyodbc import connect, Error, OperationalError
 
 from Messages import MessageBox, EventLog
 from String import SQLString, NameString
@@ -46,16 +46,15 @@ class AutoRemoveDatabaseData(QThread):
                     ',' + port +
                     ';DATABASE=' + database +
                     ';UID=' + username +
-                    ';PWD=' + password, timeout=1)
+                    ';PWD=' + password, ';timeout=3;')
                 self.cursor = self.db.cursor()
                 self.event_log.logger(self.name_string.connect_db_success_log_msg)
                 return True
 
-            except (Error, OperationalError):
+            except (Error, TypeError, OperationalError):
                 self.event_log.logger(self.name_string.connect_db_fail_log_msg)
                 reply = self.msgBox.connect_to_db_error_message()
-                if reply is not self.msgBox.Retry:
-
+                if reply != self.msgBox.Retry:
                     return False
 
     def remove_tables(self, server, database, cycle_time):

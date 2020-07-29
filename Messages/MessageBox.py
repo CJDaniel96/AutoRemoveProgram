@@ -13,6 +13,7 @@ class MessageBox(QMessageBox):
 
     def auto_remove_message(self):
         self.setIcon(self.Question)
+        self.setWindowTitle(self.name_string.question)
         self.setText(self.name_string.auto_remove_message_text)
         self.setInformativeText(self.name_string.auto_remove_message_informativeText)
         self.setStandardButtons(QMessageBox.Save | QMessageBox.Cancel)
@@ -23,6 +24,7 @@ class MessageBox(QMessageBox):
 
     def exit_program(self):
         self.setIcon(self.Question)
+        self.setWindowTitle(self.name_string.question)
         self.setText(self.name_string.exit_program_text)
         self.setInformativeText(self.name_string.exit_program_informativeText)
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
@@ -35,6 +37,7 @@ class MessageBox(QMessageBox):
         self.setIcon(self.Critical)
         self.setWindowTitle(self.name_string.error)
         self.setText(self.name_string.error_file_path)
+        self.setInformativeText('')
         self.setStandardButtons(QMessageBox.Retry)
         self.setDefaultButton(QMessageBox.Retry)
         self.exec_()
@@ -43,12 +46,14 @@ class MessageBox(QMessageBox):
         self.setIcon(self.Critical)
         self.setWindowTitle(self.name_string.error)
         self.setText(self.name_string.error_file_path)
+        self.setInformativeText('')
         self.setStandardButtons(QMessageBox.Retry)
         self.setDefaultButton(QMessageBox.Retry)
         self.exec_()
 
     def listWidget_click_message(self):
         self.setIcon(self.Question)
+        self.setWindowTitle(self.name_string.question)
         self.setText(self.name_string.listWidget_click_message_text)
         self.setInformativeText(self.name_string.listWidget_click_message_informativeText)
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
@@ -59,7 +64,9 @@ class MessageBox(QMessageBox):
 
     def remove_path_cover_message(self):
         self.setIcon(self.Warning)
+        self.setWindowTitle(self.name_string.warning)
         self.setText(self.name_string.remove_item_cover_text)
+        self.setInformativeText('')
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         self.setDefaultButton(QMessageBox.No)
         reply = self.exec_()
@@ -69,7 +76,9 @@ class MessageBox(QMessageBox):
     def cycle_setting_input_error_message(self):
         self.setIcon(self.Critical)
         self.setWindowTitle(self.name_string.error)
+        self.setWindowTitle(self.name_string.error)
         self.setText(self.name_string.cycle_settings_error_input_text)
+        self.setInformativeText('')
         self.setStandardButtons(QMessageBox.Retry)
         self.setDefaultButton(QMessageBox.Retry)
         self.exec_()
@@ -78,8 +87,9 @@ class MessageBox(QMessageBox):
         self.setIcon(self.Critical)
         self.setWindowTitle(self.name_string.error)
         self.setText(self.name_string.connect_db_error_text)
-        self.setStandardButtons(QMessageBox.Retry | QMessageBox.Cancel)
-        self.setDefaultButton(QMessageBox.Retry)
+        self.setInformativeText('')
+        self.setStandardButtons(self.Retry | self.Cancel)
+        self.setDefaultButton(self.Retry)
         reply = self.exec_()
 
         return reply
@@ -88,8 +98,18 @@ class MessageBox(QMessageBox):
         self.setIcon(self.Critical)
         self.setWindowTitle(self.name_string.error)
         self.setText(self.name_string.db_table_programming_error_text)
+        self.setInformativeText('')
         self.setStandardButtons(QMessageBox.Ignore | QMessageBox.Discard)
-        self.setStandardButtons(QMessageBox.Discard)
+        self.setDefaultButton(QMessageBox.Discard)
         reply = self.exec_()
 
         return reply
+
+    def input_none_error_message(self):
+        self.setIcon(self.Warning)
+        self.setWindowTitle(self.name_string.warning)
+        self.setText(self.name_string.input_none_error_text)
+        self.setInformativeText('')
+        self.setStandardButtons(QMessageBox.Close)
+        self.setDefaultButton(QMessageBox.Close)
+        self.exec_()
