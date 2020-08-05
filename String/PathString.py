@@ -10,7 +10,7 @@ class PathString:
         self.time_settings_ui_path_string = r'src\Qt\TimeSettingsQt.ui'
 
         # Icon Path
-        self.system_tray_icon = r'src\Icon\GPM.png'
+        self.system_tray_icon = r'src\Icon\gpmlogo.bmp'
         self.open_icon = r'src\Icon\open_icon.png'
         self.exit_icon = r'src\Icon\exit_icon.png'
         self.cycle_settings_icon = r'src\Icon\cycle_settings_icon.png'
