@@ -26,7 +26,7 @@ class CycleSettings(QDialog):
         self.listWidget.itemDoubleClicked.connect(self.on_listWidget_itemDoubleClicked)
 
     def read_cycle_list(self):
-        with open(abspath(self.path_string.cycle_list_path_string), 'r') as f:
+        with open(abspath(self.path_string.cycle_list_path_string), 'r', encoding='utf-8') as f:
             return f.read().splitlines()
 
     def get_cycle_list(self):
