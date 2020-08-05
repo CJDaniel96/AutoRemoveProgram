@@ -85,7 +85,7 @@ class MainWindow(QMainWindow):
             self.msgBox.date_setting_box_error_message()
         elif isdir(self.lineEdit.text()) is False and isfile(self.lineEdit.text()) is False:
             self.msgBox.lineEdit_error_message()
-        elif not self.remove_list_action.remove_rules(self.lineEdit.text()):
+        elif self.remove_list_action.remove_rules(self.lineEdit.text()):
             self.msgBox.lineEdit_error_message()
         else:
             reply = self.msgBox.auto_remove_message()
