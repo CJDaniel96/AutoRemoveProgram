@@ -85,7 +85,7 @@ class MainWindow(QMainWindow):
             self.msgBox.date_setting_box_error_message()
         elif isdir(self.lineEdit.text()) is False and isfile(self.lineEdit.text()) is False:
             self.msgBox.lineEdit_error_message()
-        elif not self.remove_list_action.remove_rules(self.lineEdit.text()):
+        elif self.remove_list_action.remove_rules(self.lineEdit.text()):
             self.msgBox.lineEdit_error_message()
         else:
             reply = self.msgBox.auto_remove_message()
@@ -144,7 +144,8 @@ class MainWindow(QMainWindow):
                                self.passwordLineEdit.text(),
                                self.databaseLineEdit.text(),
                                self.database_select_date]
-                if self.remove_db_list != [] and remove_item[::4] in array(self.remove_db_list)[:, ::4]:
+                if self.remove_db_list != [] and remove_item[0] in array(self.remove_db_list)[:, 0] and \
+                        remove_item[4] in array(self.remove_db_list)[:, 4]:
                     reply = self.msgBox.remove_path_cover_message()
                     if reply == self.msgBox.Yes:
                         if self.connect_db_test():
@@ -180,6 +181,8 @@ class MainWindow(QMainWindow):
                                                 self.usernameLineEdit.text(),
                                                 self.passwordLineEdit.text(),
                                                 self.databaseLineEdit.text()):
+            self.database_remove_data.disconnect_db()
+
             return True
 
         else:

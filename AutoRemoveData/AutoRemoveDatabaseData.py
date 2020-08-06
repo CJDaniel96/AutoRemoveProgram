@@ -37,25 +37,29 @@ class AutoRemoveDatabaseData(QThread):
                     for item in self.remove_db_list:
                         if self.connect_db(item[0], item[1], item[2], item[3], item[4]):
                             self.remove_tables(item[0], item[4], item[5])
+                        self.disconnect_db()
 
     def connect_db(self, server, port, username, password, database):
-        while True:
-            try:
-                self.db = connect(
-                    'DRIVER={SQL Server};SERVER=' + server +
-                    ',' + port +
-                    ';DATABASE=' + database +
-                    ';UID=' + username +
-                    ';PWD=' + password, ';timeout=3;')
-                self.cursor = self.db.cursor()
-                self.event_log.logger(self.name_string.connect_db_success_log_msg)
-                return True
+        try:
+            self.db = connect(
+                'DRIVER={SQL Server};SERVER=' + server +
+                ',' + port +
+                ';DATABASE=' + database +
+                ';UID=' + username +
+                ';PWD=' + password + ';timeout=3;')
+            self.cursor = self.db.cursor()
+            self.event_log.logger(self.name_string.connect_db_success_log_msg)
+            return True
 
-            except (Error, TypeError, OperationalError):
-                self.event_log.logger(self.name_string.connect_db_fail_log_msg)
-                reply = self.msgBox.connect_to_db_error_message()
-                if reply != self.msgBox.Retry:
-                    return False
+        except (Error, TypeError, OperationalError):
+            self.event_log.logger(self.name_string.connect_db_fail_log_msg)
+            reply = self.msgBox.connect_to_db_error_message()
+            if reply != self.msgBox.Retry:
+                return False
+
+    def disconnect_db(self):
+        self.cursor.close()
+        self.cursor = None
 
     def remove_tables(self, server, database, cycle_time):
         self.localtime = datetime.fromtimestamp(time())
