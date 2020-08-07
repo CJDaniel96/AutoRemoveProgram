@@ -1,5 +1,5 @@
 from datetime import datetime
-from time import time, localtime
+from time import time, localtime, sleep
 
 from PyQt5.QtCore import QThread
 from pyodbc import connect, Error, OperationalError
@@ -38,6 +38,7 @@ class AutoRemoveDatabaseData(QThread):
                         if self.connect_db(item[0], item[1], item[2], item[3], item[4]):
                             self.remove_tables(item[0], item[4], item[5])
                         self.disconnect_db()
+                    sleep(60)
 
     def connect_db(self, server, port, username, password, database):
         try:
